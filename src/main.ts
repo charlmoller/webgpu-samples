@@ -1,5 +1,5 @@
 import { createElem as el } from './utils/elem';
-import { SampleInfo, SourceInfo, pageCategories } from './samples';
+import { SampleInfo, pageCategories } from './samples';
 
 function getElem(
   selector: string,
