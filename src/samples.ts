@@ -22,8 +22,8 @@ type PageCategory = {
 
 export const pageCategories: PageCategory[] = [
   {
-    title: 'GPGPU Demos',
-    description: 'Visualizations of parallel GPU compute operations.',
+    title: '',
+    description: '',
     samples: {
       gameOfLife,
     },

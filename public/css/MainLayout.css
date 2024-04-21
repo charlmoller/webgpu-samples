@@ -10,7 +10,7 @@
 
 .panel {
   flex: 1 0 auto;
-  max-width: 300px;
+  max-width: 150px;
   height: 100%;
   overflow-y: auto;
   position: relative;
@@ -73,12 +73,12 @@ main {
     overflow: visible;
   }
 
-  #menuToggle ~ .panelContents {
+  #menuToggle~.panelContents {
     max-height: 0;
     overflow: hidden;
   }
 
-  #menuToggle:checked ~ .panelContents {
+  #menuToggle:checked~.panelContents {
     max-height: 2000px;
   }
 
@@ -99,4 +99,3 @@ main {
   }
 
 }
-
