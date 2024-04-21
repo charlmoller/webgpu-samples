@@ -1,9 +1,6 @@
 import { createElem as el } from './utils/elem';
 import { SampleInfo, SourceInfo, pageCategories } from './samples';
 
-/**
- * Gets an element unconditionally so TS doesn't complain.
- */
 function getElem(
   selector: string,
   parent: HTMLElement | Document = document
@@ -12,45 +9,16 @@ function getElem(
 }
 
 const sampleElem = getElem('#sample');
-const introElem = getElem('#intro');
 const sampleContainerElem = getElem('.sampleContainer', sampleElem);
-
-const darkMatcher = window.matchMedia('(prefers-color-scheme: dark)');
-
 
 // Get the parts of a string past the last `/`
 const basename = (name: string) => name.substring(name.lastIndexOf('/') + 1);
-
-/**
- * Set the current URL.
- *
- * This exists so we don't have to remember the first 2 parameters to pushState
- * and so we can insert a console.log
- */
-function setURL(url: string) {
-  history.pushState(null, '', url);
-}
 
 // Handle when the URL changes (browser back / forward)
 window.addEventListener('popstate', (e) => {
   e.preventDefault();
   parseURL();
 });
-
-
-/**
- * Show/hide source tabs
- */
-function setSourceTab(sourceInfo: SourceInfo) {
-  const name = basename(sourceInfo.path);
-  document.querySelectorAll('[data-name]').forEach((e) => {
-    const elem = e as HTMLElement;
-    elem.dataset.active = (elem.dataset.name === name).toString();
-  });
-}
-
-
-// Non authoritative test that url is for same domain
 
 // The current sample so we don't reload an iframe if the user picks the same sample.
 let currentSampleInfo: SampleInfo | undefined;
@@ -80,13 +48,12 @@ function setSampleIFrame(
   if (filename) {
     const src = url || `${filename}${search}`;
     sampleContainerElem.appendChild(el('iframe', { src }));
-    sampleContainerElem.style.height = sources.length > 0 ? '800px' : '100%';
+    sampleContainerElem.style.height = '800px';
+    sampleContainerElem.style.width = '800px';
     // hide intro and show sample
-    introElem.style.display = 'none';
     sampleElem.style.display = '';
   } else {
     // hide intro and show sample
-    introElem.style.display = '';
     sampleElem.style.display = 'none';
   }
 }
@@ -114,13 +81,6 @@ function parseURL() {
   const sampleUrl = new URL(sample, location.href);
   const sampleInfo = samplesByKey.get(basename(sampleUrl.pathname));
   setSampleIFrame(sampleInfo, sampleUrl.search);
-  if (sampleInfo) {
-    const hash = basename(url.hash.substring(1));
-    const sourceInfo =
-      sampleInfo.sources.find(({ path }) => basename(path) === hash) ||
-      sampleInfo.sources[0];
-    setSourceTab(sourceInfo);
-  }
 }
 
 /**
